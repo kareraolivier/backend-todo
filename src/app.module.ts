@@ -3,10 +3,18 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TasksModule } from './tasks/tasks.module';
 import { CategoriesModule } from './categories/categories.module';
+import { JsonDB, Config } from 'node-json-db';
 
 @Module({
   imports: [TasksModule, CategoriesModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: 'JsonDBInstance',
+      useValue: new JsonDB(new Config('Categories', true, false, '/')),
+    },
+    AppService,
+  ],
+  exports: ['JsonDBInstance'],
 })
 export class AppModule {}

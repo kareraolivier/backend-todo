@@ -1,16 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { categoriesDto, createCategoriesDto } from './dto/category.dto';
 import { JsonDB, Config } from 'node-json-db';
-
 import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class CategoriesService {
+  //    constructor(@Inject('JsonDBInstance') private readonly db: JsonDB) {}
   private db = new JsonDB(new Config('Categories', true, false, '/'));
+  allcategory = this.db.getData('/categories');
   async findAll(): Promise<categoriesDto[]> {
     try {
-      const allcategory = await this.db.getData('/categories');
-      console.log(allcategory);
-      return allcategory;
+      return await this.allcategory;
     } catch (error) {
       throw new NotFoundException(error);
     }
@@ -18,9 +17,13 @@ export class CategoriesService {
 
   async getCategoryById(id: string): Promise<categoriesDto | null> {
     try {
-      const category = (await this.db.getData(`/categories[${id}]`)) || null;
-      if (!category) throw new NotFoundException('category does not exist');
-      return category;
+      const categories = await this.allcategory;
+      const singleCategory = categories.find(
+        (category: categoriesDto) => category.id === id,
+      );
+      if (!singleCategory)
+        throw new NotFoundException('singleCategory does not exist');
+      return singleCategory;
     } catch (error) {
       console.error(error);
       return null;
@@ -35,7 +38,45 @@ export class CategoriesService {
       category: createCategoriesDto.category,
     };
     console.log(newCategory);
-    await this.db.push(`/categories`, newCategory);
+    await this.db.push(`/categories[]`, newCategory);
     return newCategory;
+  }
+  async updateCategory(
+    id: string,
+    createCategoriesDto: createCategoriesDto,
+  ): Promise<categoriesDto> {
+    try {
+      const categories = await this.allcategory;
+      const categoryIndex = categories.findIndex(
+        (category: categoriesDto) => category.id === id,
+      );
+      if (!categoryIndex) {
+        throw new NotFoundException('Category not found');
+      }
+      categories[categoryIndex] = {
+        id,
+        ...createCategoriesDto,
+      };
+      await this.db.push(`/categories`, categories);
+
+      return categories[categoryIndex];
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
+  }
+  async deleteCategoryById(id: string): Promise<string> {
+    try {
+      const categories = await this.allcategory;
+      const singleCategory = categories.filter(
+        (category: categoriesDto) => category.id !== id,
+      );
+      if (!singleCategory)
+        throw new NotFoundException('singleCategory does not exist');
+      await this.db.push(`/categories`, singleCategory);
+      return 'deleted';
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 }
