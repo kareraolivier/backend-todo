@@ -1,12 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { categoriesDto, createCategoriesDto } from './dto/category.dto';
-import { JsonDB, Config } from 'node-json-db';
+import { JsonDB } from 'node-json-db';
 import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class CategoriesService {
-  //    constructor(@Inject('JsonDBInstance') private readonly db: JsonDB) {}
-  private db = new JsonDB(new Config('Categories', true, false, '/'));
-  allcategory = this.db.getData('/categories');
+  constructor(@Inject('JsonDBInstance') private readonly db: JsonDB) {}
+
+  private get allcategory() {
+    return this.db.getData('/categories') || [];
+  }
+
   async findAll(): Promise<categoriesDto[]> {
     try {
       return await this.allcategory;
@@ -72,7 +75,7 @@ export class CategoriesService {
       );
       if (!singleCategory)
         throw new NotFoundException('singleCategory does not exist');
-      await this.db.push(`/categories`, singleCategory);
+      await this.db.push(`/categories[]`, singleCategory);
       return 'deleted';
     } catch (error) {
       console.error(error);

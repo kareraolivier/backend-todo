@@ -5,3 +5,10 @@ export class tasksDto {
   readonly isCompleted: boolean;
   readonly categoryId: string;
 }
+
+export class createTasksDto {
+  readonly title: string;
+  readonly description: string;
+  readonly isCompleted: boolean;
+  readonly categoryId: string;
+}
