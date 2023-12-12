@@ -1,7 +1,6 @@
-export class categoriesDto {
-  readonly id: string;
-  readonly category: string;
-}
+import { IsString } from 'class-validator';
+
 export class createCategoriesDto {
+  @IsString()
   readonly category: string;
 }
