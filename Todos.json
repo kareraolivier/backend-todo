@@ -1,1 +1,27 @@
-{"categories":[{"id":"2301d5bb-8bb2-4c36-a819-bcdc0f03d0c9","category":"first"}],"tasks":[{"id":"5a4db2a2-9c58-41ef-9e22-734c550c4cb8","title":"new task","description":"very good task","isCompleted":true},{"id":"066078d6-eaeb-45a5-8be5-c62b7d51abbd","title":"new task","description":"very good task","isCompleted":true},{"id":"82135423-748a-406a-85fc-86a81e61f5ef","title":"new task","description":"very good task","isCompleted":true,"categoryId":"12345"},{"id":"18c35982-52d5-47f2-802b-7739a26d3a74","title":"new task","description":"very good task","isCompleted":true,"categoryId":"12345"}]}
+{
+  "categories": [
+    {
+      "id": "cad91711-2ed6-408a-a111-4391e3ad07ca",
+      "category": "third",
+      "updatedAt": "2023-12-12T12:37:25.791Z",
+      "createdAt": "2023-12-12T12:37:25.791Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "0e53239c-d8ca-4b94-904a-8cf0093af968",
+      "title": "karera olivier",
+      "description": "very good task to task",
+      "isCompleted": false,
+      "categoryId": "cad91711-2ed6-408a-a111-4391e3ad07ca",
+      "category": {
+        "id": "cad91711-2ed6-408a-a111-4391e3ad07ca",
+        "category": "third",
+        "updatedAt": "2023-12-12T12:37:25.791Z",
+        "createdAt": "2023-12-12T12:37:25.791Z"
+      },
+      "updatedAt": "2023-12-12T12:42:57.576Z",
+      "createdAt": "2023-12-12T12:42:57.576Z"
+    }
+  ]
+}
